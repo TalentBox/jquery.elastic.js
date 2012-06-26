@@ -9,11 +9,16 @@
 *	@author-website					http://www.unwrongest.com
 *
 *	@licence						MIT License - http://www.opensource.org/licenses/mit-license.php
+*
+* @author The TalentBox Development Team
+* Original implementation adapted to configure the use of an empty line at the end of the text area.
 */
 
 (function($){ 
 	jQuery.fn.extend({  
-		elastic: function() {
+		elastic: function(noEmptyLineAtTheEnd) {
+		  
+			var noEmptyLineAtTheEnd = noEmptyLineAtTheEnd != undefined && noEmptyLineAtTheEnd;
 		
 			//	We will create a div clone of the textarea
 			//	by copying these attributes from the textarea to the div.
@@ -108,9 +113,10 @@
 						$twin.html(textareaContent+'&nbsp;');
 						
 						// Change textarea height if twin plus the height of one line differs more than 3 pixel from textarea height
-						if(Math.abs($twin.height() + lineHeight - $textarea.height()) > 3){
+						var extraHeight = noEmptyLineAtTheEnd ? 0 : lineHeight;
+						if(Math.abs($twin.height() + extraHeight - $textarea.height()) > 3){
 							
-							var goalheight = $twin.height()+lineHeight;
+							var goalheight = $twin.height()+extraHeight;
 							if(goalheight >= maxheight) {
 								setHeightAndOverflow(maxheight,'auto');
 							} else if(goalheight <= minheight) {
